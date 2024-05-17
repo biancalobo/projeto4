@@ -2,7 +2,9 @@
 #include <string.h>
 #include "banco.h"
 
-ERROS novo(Operacao operacoes[], int *pos){
+#define MAX_CLIENTES 1000
+
+enum ERROS novo(Operacao operacoes[], int *pos){
   if(*pos >= TOTAL)
     return MAX_CLIENTES;
 
