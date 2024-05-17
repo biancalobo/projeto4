@@ -11,7 +11,7 @@ int main(void){
   ERROS erro = fs[8](operacoes, &pos)
   if(erro != OK)
     pos = 0;
-
+  
 int opcao;
 do{
   printf("\nMenu Principal\n");
