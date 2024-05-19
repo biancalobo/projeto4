@@ -225,3 +225,24 @@ ERROS transferencia(Operacao operacoes[], int *pos) {
     return ERRO_DESCONHECIDO;
     }
 }
+
+ERROS sair(Operacao operacoes[], int *pos) {
+    FILE *file = fopen("clientes.bin", "wb");
+    if (file) {
+        fwrite(&cliente, sizeof(cliente), 1, file);
+        fwrite(clientes, sizeof(Cliente), cliente, file);
+        fclose(file);
+    return OK;
+    }else {
+        return ERRO_DESCONHECIDO;
+}
+    }
+
+void carregarDados() {
+    FILE *file = fopen("clientes.bin", "rb");
+    if (file) {
+        fread(&cliente, sizeof(cliente), 1, file);
+        fread(clientes, sizeof(Cliente), cliente, file);
+        fclose(file);
+    }
+}
