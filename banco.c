@@ -104,3 +104,30 @@ ERROS debito(Operacao operacoes[], int *pos) {
     return SENHA_INVALIDA;
 }
 
+ERROS deposito(Operacao operacoes[], int *pos) {
+    char cpf[12];
+    double valor;
+
+    printf("CPF: ");
+    scanf("%s", cpf);
+    
+    printf("Valor: ");
+    scanf("%lf", &valor);
+
+    for (int i = 0; i < cliente; ++i) {
+        if (strcmp(clientes[i].cpf, cpf) == 0) {
+        clientes[i].saldo += valor;
+
+    Operacao operacao;
+    snprintf(operacao.descricao, sizeof(operacao.descricao), "Deposito de %.2f", valor);
+            
+    operacao.valor = valor;
+    clientes[i].operacoes[clientes[i].operacao++] = operacao;
+              
+    return OK;
+}
+}
+
+    return CPF_INVALIDO;
+}
+
