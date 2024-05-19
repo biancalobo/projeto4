@@ -44,8 +44,8 @@ ERROS apaga(Operacao operacoes[], int *pos) {
 }
     --cliente;
     return OK;
-    }
 }
+    }
     return CPF_INVALIDO;
     
 }
@@ -81,9 +81,11 @@ ERROS debito(Operacao operacoes[], int *pos) {
         if (strcmp(clientes[i].cpf, cpf) == 0 && strcmp(clientes[i].senha, senha) == 0) {
             double taxa = clientes[i].tipoConta == COMUM ? 0.05 : 0.03;
             double valorComTaxa = valor + (valor * taxa);
-            double saldoNegativoPermitido = clientes[i].tipoConta == COMUM ? -1000.0 : -5000.0;
+            double saldoNegativo
+     = clientes[i].tipoConta == COMUM ? -1000.0 : -5000.0;
 
-        if (clientes[i].saldo - valorComTaxa >= saldoNegativoPermitido) {
+        if (clientes[i].saldo - valorComTaxa >= saldoNegativo
+     ) {
             clientes[i].saldo -= valorComTaxa;
 
     Operacao operacao;
@@ -99,7 +101,7 @@ ERROS debito(Operacao operacoes[], int *pos) {
     return ERRO_DESCONHECIDO;
 }    
     }
-}
+        }
 
     return SENHA_INVALIDA;
 }
@@ -126,7 +128,7 @@ ERROS deposito(Operacao operacoes[], int *pos) {
               
     return OK;
 }
-}
+    }
 
     return CPF_INVALIDO;
 }
@@ -164,3 +166,62 @@ ERROS extrato(Operacao operacoes[], int *pos) {
 }
 
 
+ERROS transferencia(Operacao operacoes[], int *pos) {
+    char cpfOrigem[12], senhaOrigem[20], cpfDestino[12];
+    double valor;
+
+    printf("CPF (Origem): ");
+    scanf("%s", cpfOrigem);
+    
+    printf("Senha (Origem): ");
+    scanf("%s", senhaOrigem);
+    
+    printf("CPF (Destino): ");
+    scanf("%s", cpfDestino);
+    
+    printf("Valor: ");
+    scanf("%lf", &valor);
+
+    int origem = -1, destino = -1;
+
+    for (int i = 0; i < cliente; ++i) {
+        if (strcmp(clientes[i].cpf, cpfOrigem) == 0 && strcmp(clientes[i].senha, senhaOrigem) == 0) {
+        origem = i;
+            
+        }if (strcmp(clientes[i].cpf, cpfDestino) == 0) {
+        destino = i;
+}
+        }if (origem == -1) {
+            return SENHA_INVALIDA;
+        
+        }if (destino == -1) {
+            return CPF_INVALIDO;
+}
+
+    double taxa = clientes[origem].tipoConta == COMUM ? 0.05 : 0.03;
+    double valorComTaxa = valor + (valor * taxa);
+    double saldoNegativo = clientes[origem].tipoConta == COMUM ? -1000.0 : -5000.0;
+
+        if (clientes[origem].saldo - valorComTaxa >= saldoNegativo){
+          clientes[origem].saldo -= valorComTaxa;
+          clientes[destino].saldo += valor;
+
+        Operacao operacaoOrigem;
+        snprintf(operacaoOrigem.descricao, sizeof(operacaoOrigem.descricao), "Transferencia para %s de %.2f (taxa: %.2f%%)", cpfDestino, valor, taxa * 100);
+            
+        operacaoOrigem.valor = -valorComTaxa;
+        clientes[origem].operacoes[clientes[origem].operacao++] = operacaoOrigem;
+
+        Operacao operacaoDestino;
+        snprintf(operacaoDestino.descricao, sizeof(operacaoDestino.descricao), "Transferencia de %s de %.2f", cpfOrigem, valor);
+            
+        operacaoDestino.valor = valor;
+        clientes[destino].operacoes[clientes[destino].operacao++] = operacaoDestino;
+
+    return OK;
+            
+        }else {
+    
+    return ERRO_DESCONHECIDO;
+    }
+}
