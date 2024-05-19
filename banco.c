@@ -131,3 +131,36 @@ ERROS deposito(Operacao operacoes[], int *pos) {
     return CPF_INVALIDO;
 }
 
+
+ERROS extrato(Operacao operacoes[], int *pos) {
+    char cpf[12];
+    char senha[20];
+
+    printf("CPF: ");
+    scanf("%s", cpf);
+    
+    printf("Senha: ");
+    scanf("%s", senha);
+
+    for (int i = 0; i < cliente; ++i) {
+        if (strcmp(clientes[i].cpf, cpf) == 0 && strcmp(clientes[i].senha, senha) == 0) {
+        char filename[100];
+        snprintf(filename, sizeof(filename), "%s_extrato.txt", cpf);
+        FILE *file = fopen(filename, "w");
+
+        if (file) {
+            fprintf(file, "Extrato de %s (CPF: %s)\n\n", clientes[i].nome, clientes[i].cpf);
+    for (int j = 0; j < clientes[i].operacao; ++j) {
+        fprintf(file, "%s: %.2f\n", clientes[i].operacoes[j].descricao, clientes[i].operacoes[j].valor);
+}
+        fclose(file);
+    return OK;
+} else {
+    return ERRO_DESCONHECIDO;
+}
+    }
+        }
+    return SENHA_INVALIDA;
+}
+
+
