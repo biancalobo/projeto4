@@ -2,16 +2,17 @@
 #include "banco.h"
 
 Cliente clientes[MAX_CLIENTES];
-int cliente = 0;
+int clienteTotal = 0;
 
+#função para criar novos clientes
 ERROS novo(Operacao operacoes[], int *pos) {
-    if (cliente >= MAX_CLIENTES) {
+    if (clienteTotal >= MAX_CLIENTES) {
         return MAX_CLIENTES_ERRO;
 } Cliente cliente;
-    printf("Insira o nome do cliente: ");
+    printf("Insira o nome do clienteTotal: ");
     scanf("%s", cliente.nome);
     
-    printf("Insira o CPF do cliente: ");
+    printf("Insira o CPF do clienteTotal: ");
     scanf("%s", cliente.cpf);
     
     printf("Insira uma senha para a conta: ");
@@ -26,23 +27,23 @@ ERROS novo(Operacao operacoes[], int *pos) {
     scanf("%f", &cliente.saldo);
 
     cliente.operacao = 0;
-    clientes[cliente++] = cliente;
+    clientes[clienteTotal++] = cliente;
 
     return OK;
 }
 
-
+#função para apagar clientes
 ERROS apaga(Operacao operacoes[], int *pos) {
     char cpf[12];
-    printf("CPF do cliente a ser removido: ");
+    printf("CPF do clienteTotal a ser removido: ");
     scanf("%s", cpf);
 
-    for (int i = 0; i < cliente; ++i) {
+    for (int i = 0; i < clienteTotal; ++i) {
         if (strcmp(clientes[i].cpf, cpf) == 0) {
-    for (int j = i; j < cliente - 1; ++j) {
+    for (int j = i; j < clienteTotal - 1; ++j) {
         clientes[j] = clientes[j + 1];
 }
-    --cliente;
+    --clienteTotal;
     return OK;
 }
     }
@@ -50,9 +51,9 @@ ERROS apaga(Operacao operacoes[], int *pos) {
     
 }
 
-
+#função para listar todos os clientes
 ERROS listar(Operacao operacoes[], int *pos) {
-    for (int i = 0; i < cliente; ++i) {
+    for (int i = 0; i < clienteTotal; ++i) {
     printf("Nome: %s\nCPF: %s\nTipo de Conta: %s\nSaldo: %.2f\n\n",
     clientes[i].nome,
     clientes[i].cpf,
@@ -62,7 +63,7 @@ ERROS listar(Operacao operacoes[], int *pos) {
     return OK;
 }
 
-
+# função para débito
 ERROS debito(Operacao operacoes[], int *pos) {
     char cpf[12];
     char senha[20];
@@ -77,7 +78,7 @@ ERROS debito(Operacao operacoes[], int *pos) {
     printf("Valor: ");
     scanf("%lf", &valor);
 
-    for (int i = 0; i < cliente; ++i) {
+    for (int i = 0; i < clienteTotal; ++i) {
         if (strcmp(clientes[i].cpf, cpf) == 0 && strcmp(clientes[i].senha, senha) == 0) {
             double taxa = clientes[i].tipoConta == COMUM ? 0.05 : 0.03;
             double valorComTaxa = valor + (valor * taxa);
@@ -106,6 +107,7 @@ ERROS debito(Operacao operacoes[], int *pos) {
     return SENHA_INVALIDA;
 }
 
+#função para depósito
 ERROS deposito(Operacao operacoes[], int *pos) {
     char cpf[12];
     double valor;
@@ -116,7 +118,7 @@ ERROS deposito(Operacao operacoes[], int *pos) {
     printf("Valor: ");
     scanf("%lf", &valor);
 
-    for (int i = 0; i < cliente; ++i) {
+    for (int i = 0; i < clienteTotal; ++i) {
         if (strcmp(clientes[i].cpf, cpf) == 0) {
         clientes[i].saldo += valor;
 
@@ -133,7 +135,7 @@ ERROS deposito(Operacao operacoes[], int *pos) {
     return CPF_INVALIDO;
 }
 
-
+#função de extrato
 ERROS extrato(Operacao operacoes[], int *pos) {
     char cpf[12];
     char senha[20];
@@ -144,7 +146,7 @@ ERROS extrato(Operacao operacoes[], int *pos) {
     printf("Senha: ");
     scanf("%s", senha);
 
-    for (int i = 0; i < cliente; ++i) {
+    for (int i = 0; i < clienteTotal; ++i) {
         if (strcmp(clientes[i].cpf, cpf) == 0 && strcmp(clientes[i].senha, senha) == 0) {
         char filename[100];
         snprintf(filename, sizeof(filename), "%s_extrato.txt", cpf);
@@ -165,7 +167,7 @@ ERROS extrato(Operacao operacoes[], int *pos) {
     return SENHA_INVALIDA;
 }
 
-
+#função para tranferência entre contas
 ERROS transferencia(Operacao operacoes[], int *pos) {
     char cpfOrigem[12], senhaOrigem[20], cpfDestino[12];
     double valor;
@@ -184,7 +186,7 @@ ERROS transferencia(Operacao operacoes[], int *pos) {
 
     int origem = -1, destino = -1;
 
-    for (int i = 0; i < cliente; ++i) {
+    for (int i = 0; i < clienteTotal; ++i) {
         if (strcmp(clientes[i].cpf, cpfOrigem) == 0 && strcmp(clientes[i].senha, senhaOrigem) == 0) {
         origem = i;
             
@@ -226,11 +228,12 @@ ERROS transferencia(Operacao operacoes[], int *pos) {
     }
 }
 
+#função para sair
 ERROS sair(Operacao operacoes[], int *pos) {
     FILE *file = fopen("clientes.bin", "wb");
     if (file) {
-        fwrite(&cliente, sizeof(cliente), 1, file);
-        fwrite(clientes, sizeof(Cliente), cliente, file);
+        fwrite(&clienteTotal, sizeof(clienteTotal), 1, file);
+        fwrite(clientes, sizeof(Cliente), clienteTotal, file);
         fclose(file);
     return OK;
     }else {
@@ -239,10 +242,10 @@ ERROS sair(Operacao operacoes[], int *pos) {
     }
 
 void carregarDados() {
-    FILE *file = fopen("clientes.bin", "rb");
+    FILE *file = fopen("client.bin", "rb");
     if (file) {
-        fread(&cliente, sizeof(cliente), 1, file);
-        fread(clientes, sizeof(Cliente), cliente, file);
+        fread(&clienteTotal, sizeof(clienteTotal), 1, file);
+        fread(clientes, sizeof(Cliente), clienteTotal, file);
         fclose(file);
     }
 }
