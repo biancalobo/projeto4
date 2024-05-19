@@ -2,10 +2,10 @@
 #include "banco.h"
 
 Cliente clientes[MAX_CLIENTES];
-int clienteCount = 0;
+int cliente = 0;
 
 ERROS novo(Operacao operacoes[], int *pos) {
-    if (clienteCount >= MAX_CLIENTES) {
+    if (cliente >= MAX_CLIENTES) {
         return MAX_CLIENTES_ERRO;
 } Cliente cliente;
     printf("Insira o nome do cliente: ");
@@ -26,8 +26,26 @@ ERROS novo(Operacao operacoes[], int *pos) {
     scanf("%f", &cliente.saldo);
 
     cliente.operacao = 0;
-    clientes[clienteCount++] = cliente;
+    clientes[cliente++] = cliente;
 
     return OK;
 }
 
+
+ERROS apaga(Operacao operacoes[], int *pos) {
+    char cpf[12];
+    printf("CPF do cliente a ser removido: ");
+    scanf("%s", cpf);
+
+    for (int i = 0; i < cliente; ++i) {
+        if (strcmp(clientes[i].cpf, cpf) == 0) {
+    for (int j = i; j < cliente - 1; ++j) {
+        clientes[j] = clientes[j + 1];
+}
+    --cliente;
+return OK;
+    }
+}
+return CPF_INVALIDO;
+    
+}
