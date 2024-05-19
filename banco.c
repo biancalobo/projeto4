@@ -1,28 +1,33 @@
-#include <stdio.h>
 #include <string.h>
 #include "banco.h"
 
-#define MAX_CLIENTES 1000
+Cliente clientes[MAX_CLIENTES];
+int clienteCount = 0;
 
-enum ERROS novo(Operacao operacoes[], int *pos){
-  if(*pos >= TOTAL)
-    return MAX_CLIENTES;
+ERROS novo(Operacao operacoes[], int *pos) {
+    if (clienteCount >= MAX_CLIENTES) {
+        return MAX_CLIENTES_ERRO;
+} Cliente cliente;
+    printf("Insira o nome do cliente: ");
+    scanf("%s", cliente.nome);
+    
+    printf("Insira o CPF do cliente: ");
+    scanf("%s", cliente.cpf);
+    
+    printf("Insira uma senha para a conta: ");
+    scanf("%s", cliente.senha);
+    
+    printf("Insira o tipo de conta (0 - Comum, 1 - Plus): ");
+    int tipo;
+    scanf("%d", &tipo);
+    cliente.tipoConta = tipo == 0 ? COMUM : PLUS;
+    
+    printf("Insira o saldo inicial da conta: ");
+    scanf("%f", &cliente.saldo);
 
-  printf("Insira o nome do cliente: ");
-  scanf("%s", operacoes[*pos].nome);
+    cliente.operacao = 0;
+    clientes[clienteCount++] = cliente;
 
-  printf("Insira o CPF do cliente: ");
-  scanf("%d", operacoes[*pos].cpf);
-
-  printf("Insira uma senha para a conta: ");
-  scanf("%d", operacoes[*pos].senha);
-
-  printf("Insira o tipo de conta (Comum ou Plus): ");
-  if(*pos == COMUM)
-    return COMUM;
-  printf("Insira o saldo da conta: ");
-  if(*pos == PLUS)
-    return PLUS;
-  printf("Insira o valor do débito: ");
+    return OK;
 }
 
