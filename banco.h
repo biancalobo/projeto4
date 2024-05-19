@@ -30,7 +30,7 @@ typedef struct {
 typedef struct {
     char nome[50];
     char cpf[12];
-    TipoConta tipoConta;
+    tipoConta tipoConta;
     char senha[20];
     float saldo;
     Operacao operacoes[MAX_OPERACOES];
