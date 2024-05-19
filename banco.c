@@ -61,3 +61,46 @@ ERROS listar(Operacao operacoes[], int *pos) {
 }
     return OK;
 }
+
+
+ERROS debito(Operacao operacoes[], int *pos) {
+    char cpf[12];
+    char senha[20];
+    double valor;
+
+    printf("CPF: ");
+    scanf("%s", cpf);
+    
+    printf("Senha: ");
+    scanf("%s", senha);
+    
+    printf("Valor: ");
+    scanf("%lf", &valor);
+
+    for (int i = 0; i < cliente; ++i) {
+        if (strcmp(clientes[i].cpf, cpf) == 0 && strcmp(clientes[i].senha, senha) == 0) {
+            double taxa = clientes[i].tipoConta == COMUM ? 0.05 : 0.03;
+            double valorComTaxa = valor + (valor * taxa);
+            double saldoNegativoPermitido = clientes[i].tipoConta == COMUM ? -1000.0 : -5000.0;
+
+        if (clientes[i].saldo - valorComTaxa >= saldoNegativoPermitido) {
+            clientes[i].saldo -= valorComTaxa;
+
+    Operacao operacao;
+    snprintf(operacao.descricao, sizeof(operacao.descricao), "Debito de %.2f (taxa: %.2f%%)", valor, taxa * 100);
+            
+    operacao.valor = -valorComTaxa;
+    clientes[i].operacoes[clientes[i].operacao++] = operacao;
+                  
+    return OK;
+            
+} else {
+            
+    return ERRO_DESCONHECIDO;
+}    
+    }
+}
+
+    return SENHA_INVALIDA;
+}
+
