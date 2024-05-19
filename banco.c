@@ -4,6 +4,7 @@
 Cliente clientes[MAX_CLIENTES];
 int clienteTotal = 0;
 
+#função para criar novos clientes
 ERROS novo(Operacao operacoes[], int *pos) {
     if (clienteTotal >= MAX_CLIENTES) {
         return MAX_CLIENTES_ERRO;
@@ -31,7 +32,7 @@ ERROS novo(Operacao operacoes[], int *pos) {
     return OK;
 }
 
-
+#função para apagar clientes
 ERROS apaga(Operacao operacoes[], int *pos) {
     char cpf[12];
     printf("CPF do clienteTotal a ser removido: ");
@@ -50,7 +51,7 @@ ERROS apaga(Operacao operacoes[], int *pos) {
     
 }
 
-
+#função para listar todos os clientes
 ERROS listar(Operacao operacoes[], int *pos) {
     for (int i = 0; i < clienteTotal; ++i) {
     printf("Nome: %s\nCPF: %s\nTipo de Conta: %s\nSaldo: %.2f\n\n",
@@ -62,7 +63,7 @@ ERROS listar(Operacao operacoes[], int *pos) {
     return OK;
 }
 
-
+# função para débito
 ERROS debito(Operacao operacoes[], int *pos) {
     char cpf[12];
     char senha[20];
@@ -106,6 +107,7 @@ ERROS debito(Operacao operacoes[], int *pos) {
     return SENHA_INVALIDA;
 }
 
+#função para depósito
 ERROS deposito(Operacao operacoes[], int *pos) {
     char cpf[12];
     double valor;
@@ -133,7 +135,7 @@ ERROS deposito(Operacao operacoes[], int *pos) {
     return CPF_INVALIDO;
 }
 
-
+#função de extrato
 ERROS extrato(Operacao operacoes[], int *pos) {
     char cpf[12];
     char senha[20];
@@ -165,7 +167,7 @@ ERROS extrato(Operacao operacoes[], int *pos) {
     return SENHA_INVALIDA;
 }
 
-
+#função para tranferência entre contas
 ERROS transferencia(Operacao operacoes[], int *pos) {
     char cpfOrigem[12], senhaOrigem[20], cpfDestino[12];
     double valor;
@@ -226,6 +228,7 @@ ERROS transferencia(Operacao operacoes[], int *pos) {
     }
 }
 
+#função para sair
 ERROS sair(Operacao operacoes[], int *pos) {
     FILE *file = fopen("clientes.bin", "wb");
     if (file) {
