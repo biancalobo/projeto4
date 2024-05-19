@@ -43,9 +43,21 @@ ERROS apaga(Operacao operacoes[], int *pos) {
         clientes[j] = clientes[j + 1];
 }
     --cliente;
-return OK;
+    return OK;
     }
 }
-return CPF_INVALIDO;
+    return CPF_INVALIDO;
     
+}
+
+
+ERROS listar(Operacao operacoes[], int *pos) {
+    for (int i = 0; i < cliente; ++i) {
+    printf("Nome: %s\nCPF: %s\nTipo de Conta: %s\nSaldo: %.2f\n\n",
+    clientes[i].nome,
+    clientes[i].cpf,
+    clientes[i].tipoConta == COMUM ? "Comum" : "Plus",
+    clientes[i].saldo);
+}
+    return OK;
 }
